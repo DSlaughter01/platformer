@@ -19,6 +19,8 @@ def main():
     while run:
         
         clock.tick(FPS)
+        # left, right, vert = movement(player, tilemap)
+        coll = vertical_coll(player, tilemap)
         
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -29,8 +31,7 @@ def main():
                 if event.key == pygame.K_SPACE:
                     player.jump()
 
-        # x_offset = get_offset(player, x_offset)
-        left, right, _ = movement(player, tilemap)
+        x_offset = get_offset(player, x_offset)
         player.loop()
         draw(bg_img, tilemap, player, x_offset)
 

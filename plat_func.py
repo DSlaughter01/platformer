@@ -28,11 +28,10 @@ def get_background():
 # x offset when moving more than 100 pixels aways from left or right border
 def get_offset(player, x_offset):
 
-    if player.rect.x > WIDTH - 200 + x_offset and player.x_vel > 0: x_offset += X_VEL
-    elif player.rect.x < 200 + x_offset and player.x_vel < 0: x_offset -= X_VEL
+    if player.rect.right >= WIDTH - 300 and player.x_vel > 0: x_offset += X_VEL
+    elif player.rect.left <= 300 + x_offset and player.x_vel < 0: x_offset -= X_VEL
     
     return x_offset
-
 
 def vertical_coll(player, objects):
     
@@ -41,8 +40,6 @@ def vertical_coll(player, objects):
         if pygame.sprite.collide_mask(player, obj):
             obj_list.append(obj)
             
-    if len(obj_list) == 0: player.fall()
-
     for obj in obj_list:
         if player.y_vel > 0: 
             player.rect.bottom = obj.rect.top
@@ -50,7 +47,9 @@ def vertical_coll(player, objects):
         elif player.y_vel < 0:
             player.rect.top = obj.rect.bottom
             player.hit_head()
-    
+            
+    if len(obj_list) == 0: player.fall()
+
     return obj_list
 
 

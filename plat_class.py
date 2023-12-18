@@ -33,7 +33,7 @@ class Sprite(pygame.sprite.Sprite):
     # Implement sprite movement
     def move(self, dx, dy):
         if self.y_vel <= MAX_Y_VEL and self.has_landed == False: self.y_vel += GRAVITY
-        elif self.has_landed == True: self.y_vel = 0
+        elif self.has_landed == True: dy = 0
         self.rect.x += dx
         self.rect.y += dy
 
@@ -68,10 +68,10 @@ class Sprite(pygame.sprite.Sprite):
 
         # If no horizontal collisions, ok to move horizontally
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_LEFT] and left_coll == None: self.move_left()
-        elif keys[pygame.K_RIGHT] and right_coll == None: self.move_right() 
+        if keys[pygame.K_LEFT]: self.move_left()
+        elif keys[pygame.K_RIGHT]: self.move_right()
 
-        # self.choose_sprite()
+        self.choose_sprite()
 
         # Update the mask
         self.update()
@@ -89,7 +89,6 @@ class Object(pygame.sprite.Sprite):
         # Not sure if it's bad practice to have 2 definitions of self.img in the __init__ function
         self.img = pygame.image.load(join('my_tiles', img_filename + '.png')).convert_alpha()
         self.img = pygame.transform.scale_by(self.img, height / self.img.get_height())
-        self.mask = pygame.mask.from_surface(self.img) # Not sure what the next parameter threshold does
     
     def draw_obj(self, window, x_offset):
         window.blit(self.img, (self.rect.x - x_offset, self.rect.y))
@@ -98,3 +97,4 @@ class Object(pygame.sprite.Sprite):
 class Block(Object):
     def __init__(self, img_filename, x, y, width, height):
         super().__init__(img_filename, x, y, width, height)
+        self.mask = pygame.mask.from_surface(self.img) # Not sure what the next parameter threshold does
